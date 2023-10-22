@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>数据分析</title>
+    <link rel="stylesheet" href="../static/css/analyzer.css">
+    <link rel="stylesheet" href="../static/css/chat.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script></head>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<body>
+    <div id="main-content">
+        <div class="dropdown">
+            <button onclick="toggleDropdown('dropdown-content-1')">inputCSV</button>
+            <div class="dropdown-content" id="dropdown-content-1">
+                <a href=javascript:void(0) onclick="sendFilePath('data/inputData/Mytest.csv')">CSV文件1</a>
+                <a href=javascript:void(0) onclick="sendFilePath('data/inputData/emotions.csv')">CSV文件2</a>
+            </div>
+        </div>
+        <div id="form-container">
+            <form id="tree-form" action="/tree" method="POST">
+                <label for="x-label">X_label:</label>
+                <select id="x-label" name="x_label[]" multiple required>
+                </select>
+                <label for="y-label">Y_label:</label>
+                <select id="y-label" name="y_label[]" multiple required>
+                </select>
+                <button type="submit">提交</button>
+            </form>
+        </div>
+        <!-- 打印路径 -->
+        <h3 style="margin:0 auto;" id="full_path"></h3>
+        <!-- 图表和文字说明将在这里显示 -->
+        <div id="myChart" style="width: 600px;height:400px;"></div>
+        <div id="myImg" style="width: 600px;height:400px;"></div>
+
+
+    </div>
+
+    <div id="side-bar">
+        <div class="dropdown">
+            <button onclick="toggleDropdown('dropdown-content-2')">outputCSV</button>
+            <div class="dropdown-content" id="dropdown-content-2">
+                <a href="#">CSV文件1</a>
+                <a href="#">CSV文件2</a>
+            </div>
+        </div>
+        <ul>
+            <li><h3>数据清洗</h3></li>
+            <ul>
+                <li>删除重复值</li>
+                <li>删除缺失值</li>
+                <li>数据标准化</li>
+            </ul>
+            <li><h3>机器学习模型</h3></li>
+            <ul>
+                <li id="decision-tree-classification">决策树分类</li>
+                <li id="logistic-regression-classification">逻辑回归分类</li>
+                <li id="svm-classification">支持向量机分类</li>
+                <li id="decision-tree-regression">决策树回归</li>
+            </ul>
+            <li><h3>数据分析</h3></li>
+            <ul>
+                <li>acf分析</li>
+                <li>相关性分析</li>
+                <li>绘制柱状图</li>
+                <li>绘制折线图</li>
+                <li>绘制散点图</li>
+                <li>绘制箱线图</li>
+                <li>绘制热力图</li>
+                <li>绘制饼图</li>
+                <li>绘制直方图</li>
+            </ul>
+        </ul>
+    </div>
+    <div id="chat-icon" class="chat-icon">
+        <img src="..\static\img\monika.png" alt="Chat with us" />  <!-- 你的聊天图标可以替换这里的 chat_icon.png -->
+    </div>
+    
+    <div id="chat-box" class="chat-box" style="display: none;">
+        <div id="chat-messages" class="chat-messages">
+            <!-- 在这里添加消息 -->
+            <div id="loading" style="display: none;">...</div>
+        </div>
+        <div class="chat-input-area">
+            <input id="chat-input" type="text" class="chat-input" placeholder="Type a message..." />
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+    <script typet="text/javascript" src="../static/js/MachineLearning.js"></script>
+    <script typet="text/javascript" src="../static/js/chat.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // 控制时机，防止扰乱其它功能
+            var myChart = echarts.init(document.getElementById('myChart'));
+            myChart.setOption({{ myechart|safe }});
+          });
+
+
+        function toggleDropdown(id) {
+            var dropdownContent = document.getElementById(id);
+            if (dropdownContent.style.display === "none") {
+                dropdownContent.style.display = "block";
+            } else {
+                dropdownContent.style.display = "none";
+            }
+        }
+        //更新下拉列表
+        $.get('/get-columns', function(data) {
+            var xLabelSelect = $('#x-label');
+            var yLabelSelect = $('#y-label');
+            xLabelSelect.empty();
+            yLabelSelect.empty();
+            $.each(data, function(index, value) {
+                xLabelSelect.append($('<option></option>').attr('value', value).text(value));
+                yLabelSelect.append($('<option></option>').attr('value', value).text(value));
+            });
+        });
+        $.get('/get-filenames', function(filenames) {
+            var dropdownContent = $('#dropdown-content-1');
+            dropdownContent.empty();
+            $.each(filenames, function(index, filename) {
+                dropdownContent.append('<a href=javascript:void(0) onclick="sendFilePath(\'data/inputData/' + filename + '\')">' + filename + '</a>');
+            });
+        });
+
+        // 读取文件
+        function sendFilePath(filePath) {
+            $.post('/read', { path: filePath }, function(response) {
+                console.log(response);
+                // 添加完整路径
+                $('#full_path').append(response);
+            });
+        }
+
+    </script>
+</body>
+
+</html>

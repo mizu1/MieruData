@@ -1,0 +1,58 @@
+.TitleCenter{
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+
+    width: 684px;
+}
+.TitleCenter h1{
+    font-size: 50px;
+    font-weight: 600;
+    color: #fff;
+}
+.TitleCenter p{
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 10px;
+    text-align: center;
+}
+.TitleCenter a{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,75%);
+    display: block;
+    padding: 10px 20px;
+    font-size: 30px;
+    font-style:italic;
+    text-decoration: none;
+    color: #fff;
+    background: #936dc9;
+    transition: .3s;
+    text-align: center;
+    width: 120px;
+    border-radius: 20px;
+}
+.TitleCenter a:hover{
+    color: #b68fee;
+    background:rgba(165, 24, 194, 0.1);
+}
+.TitleCenter a:active{
+        background: #864fd3;
+        transform: translateY(2px);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+    object-fit: cover;
+}
