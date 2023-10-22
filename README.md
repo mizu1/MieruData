@@ -5,9 +5,9 @@
 2. 进入项目目录
 3. 安装依赖
    
-bash
+'''bash
    pip install -r requirements.txt
-   
+'''   
 4. 添加你的OpenAI API密钥
    在`AutogenAngent.py`中添加你的OpenAI API密钥:
    ![Alt text](image.png)
