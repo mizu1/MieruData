@@ -63,7 +63,7 @@ playwright==1.37.0
 prettytable==3.9.0
 prompt-toolkit @ file:///tmp/build/80754af9/prompt-toolkit_1633440160888/work
 pure-eval @ file:///opt/conda/conda-bld/pure_eval_1646925070566/work
-pyautogen==0.1.10
+ag2==0.1.10
 pydantic==2.3.0
 pydantic_core==2.6.3
 pyecharts==2.0.4
